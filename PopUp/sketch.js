@@ -2,13 +2,13 @@ let gualmart;
 let gualmartSound;
 let item;
 
-let itemSize = 120;
+let itemSize = 150;
 
 async function setup() {
   createCanvas(800, 400);
 
   // Load image and sound
-  gualmart = await loadImage('Images/ad.jpg');
+  gualmart = await loadImage('Images/FaceAd.png');
   gualmartSound = await loadSound('Sound/gualmartSound (2).mp3');
 
   // Create only one image
