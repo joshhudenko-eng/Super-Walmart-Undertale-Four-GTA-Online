@@ -1,3 +1,9 @@
+console.log("heart.js loaded");
+
+let heartX = 320;
+let heartY = 235;
+let heartSpeed = 3;
+
 function drawHeart() {
   rectMode(CENTER);
   fill("#ff1f1f");
@@ -36,4 +42,7 @@ function drawHeart() {
   if (keyIsDown("s")) heartY += heartSpeed;
   if (keyIsDown("a")) heartX -= heartSpeed;
   if (keyIsDown("d")) heartX += heartSpeed;
+
+  heartX = constrain(heartX, 198, 442);
+heartY = constrain(heartY, 198, 277);
 }
