@@ -1,0 +1,79 @@
+let gualmart;
+let gualmartSound;
+let item;
+
+let itemSize = 120;
+
+async function setup() {
+  createCanvas(800, 400);
+
+  // Load image and sound
+  gualmart = await loadImage('Images/ad.jpg');
+  gualmartSound = await loadSound('Sound/gualmartSound (2).mp3');
+
+  // Create only one image
+  createItem();
+}
+
+function draw() {
+  background(220);
+
+  if (!item) return;
+
+  // Move the image
+  item.x += item.vx;
+  item.y += item.vy;
+
+  let hitWall = false;
+
+  // Bounce off left wall
+  if (item.x <= 0) {
+    item.x = 0;
+    item.vx = abs(item.vx);
+    hitWall = true;
+  }
+
+  // Bounce off right wall
+  if (item.x >= width - itemSize) {
+    item.x = width - itemSize;
+    item.vx = -abs(item.vx);
+    hitWall = true;
+  }
+
+  // Bounce off top wall
+  if (item.y <= 0) {
+    item.y = 0;
+    item.vy = abs(item.vy);
+    hitWall = true;
+  }
+
+  // Bounce off bottom wall
+  if (item.y >= height - itemSize) {
+    item.y = height - itemSize;
+    item.vy = -abs(item.vy);
+    hitWall = true;
+  }
+
+  // Play sound whenever the image hits a wall
+  if (hitWall && gualmartSound) {
+    gualmartSound.play();
+  }
+
+  // Draw the image
+  image(gualmart, item.x, item.y, itemSize, itemSize);
+}
+
+// Create the bouncing image
+function createItem() {
+  item = {
+    x: random(0, 200),
+    y: random(0, 200),
+    vx: random([-2, 1]),
+    vy: random([-2,1])
+  };
+}
+
+// Click once to enable audio
+function mousePressed() {
+  userStartAudio();
+}
