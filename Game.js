@@ -9,6 +9,14 @@ let attackSpeed = 8;
 
 let bossHP = 500;
 let maxBossHP = 500;
+let bossLevel = 1;
+
+// Load backgrounds
+let marioBG = new Image();
+marioBG.src = "Images/Mario.png";
+
+let walmartBG = new Image();
+walmartBG.src = "Images/Walmart.png";
 
 // Current battle screen
 let battleScreen = "menu";
@@ -22,7 +30,7 @@ function setup() {
 }
 
 function draw() {
-  background(12);
+  drawLevelBackground(12);
 
   // Boss HP bar stays visible
   drawBossHP();
@@ -61,9 +69,12 @@ function draw() {
 
   // Dodge phase
   else if (battleScreen === "dodge") {
-    drawDodgeScreen();
-  }
+  drawDodgeScreen();
 
+  // Press R to return to the fight menu
+  if (keyIsDown(82)) {
+    battleScreen = "menu";
+  }
   // Victory screen
   else if (battleScreen === "win") {
     fill(255);
@@ -73,7 +84,7 @@ function draw() {
 
     text("YOU WIN!", width / 2, 210);
   }
-}
+}}
 
 
 // Draw only the boss HP bar
@@ -235,10 +246,11 @@ function drawDodgeScreen() {
   rect(190, 190, 260, 95);
   pop();
 
-  // Draw the heart from heart.js
+if (typeof drawHeart === "function") {
   push();
   drawHeart();
   pop();
+}
 
   // Return instructions
   push();
@@ -297,7 +309,7 @@ function keyPressed() {
     damage = constrain(damage, 0, 100);
 
     // Damage the boss
-    bossHP = max(0, bossHP - damage);
+    damageBoss(damage);
 
     // Freeze the attack line
     battleScreen = "result";
@@ -317,5 +329,53 @@ function keyPressed() {
   // Prevent Space from scrolling page
   if (key === " ") {
     return false;
+  }
+}
+
+function drawLevelBackground() {
+  background(12);
+
+  let bg = null;
+
+  if (bossLevel === 2) {
+    bg = marioBG;
+  }
+
+  if (bossLevel === 3) {
+    bg = walmartBG;
+  }
+
+  // Draw the selected background
+  if (bg && bg.complete && bg.naturalWidth > 0) {
+    drawingContext.drawImage(
+      bg, 0, 0, width, height
+    );
+  }
+}
+
+
+function damageBoss(damage) {
+
+  let level2HP = Math.round(maxBossHP * 2 / 3);
+  let level3HP = Math.round(maxBossHP / 3);
+
+  if (bossLevel === 1) {
+    bossHP = max(level2HP, bossHP - damage);
+
+    if (bossHP <= level2HP) {
+      bossLevel = 2;
+    }
+  }
+
+  else if (bossLevel === 2) {
+    bossHP = max(level3HP, bossHP - damage);
+
+    if (bossHP <= level3HP) {
+      bossLevel = 3;
+    }
+  }
+
+  else if (bossLevel === 3) {
+    bossHP = max(0, bossHP - damage);
   }
 }
