@@ -4,7 +4,7 @@ function newRocks(){
 
   const angle = atan2(heartY - y, heartX - x)
   //to change the speed of the projectiles change theese values
-  const speed = random(3, 5)
+  const speed = random(1, 3)
 
   rocks.push({
     x: x,
