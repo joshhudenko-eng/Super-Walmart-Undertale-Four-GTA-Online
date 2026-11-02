@@ -9,8 +9,10 @@ let rocks = []
 let gameOver = false
 let lasers = []
 let lives = 3
-function setup() {
+let underblaster;
+async function setup() {
   createCanvas(windowWidth, windowHeight);
+  underblaster = await loadImage('/assets/underblaster.png')
 }
 
 function draw() {
@@ -18,6 +20,8 @@ function draw() {
   if (!gameOver){
   moveRocks()
   drawHeart()
+  drawBoss1()
+
     }
   drawRocks()
 
