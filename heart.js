@@ -1,9 +1,3 @@
-console.log("heart.js loaded");
-
-let heartX = 320;
-let heartY = 235;
-let heartSpeed = 3;
-
 function drawHeart() {
   rectMode(CENTER);
   fill("#ff1f1f");
