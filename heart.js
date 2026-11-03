@@ -2,47 +2,31 @@ console.log("heart.js loaded");
 
 let heartX = 320;
 let heartY = 235;
-let heartSpeed = 3;
+const heartSpeed = 3;
 
 function drawHeart() {
-  rectMode(CENTER);
-  fill("#ff1f1f");
   noStroke();
+  fill("#ff1f1f");
+
+  rectMode(CENTER);
   rect(heartX + 4.5, heartY - 5.9, 6, 3);
-
-  rectMode(CENTER);
-  fill("#ff1f1f");
-  noStroke();
   rect(heartX - 4.5, heartY - 5.9, 6, 3);
-
-  rectMode(CENTER);
-  fill("#ff1f1f");
-  noStroke();
   rect(heartX, heartY - 2.9, 15, 3);
-
-  rectMode(CENTER);
-  fill("#ff1f1f");
-  noStroke();
   rect(heartX, heartY, 15, 3);
-
-  fill("#ff1f1f");
-  noStroke();
   rect(heartX, heartY + 2.9, 10, 3);
-
-  fill("#ff1f1f");
-  noStroke();
   rect(heartX, heartY + 5.9, 5, 3);
 
-  noFill(); //hitbox
+  // Keep the visible hitbox from the original heart design.
+  noFill();
   strokeWeight(1);
   stroke("#ffffff");
   rect(heartX, heartY, 15, 15);
 
-  if (keyIsDown("w")) heartY -= heartSpeed;
-  if (keyIsDown("s")) heartY += heartSpeed;
-  if (keyIsDown("a")) heartX -= heartSpeed;
-  if (keyIsDown("d")) heartX += heartSpeed;
+  if (keyIsDown(87)) heartY -= heartSpeed; // W
+  if (keyIsDown(83)) heartY += heartSpeed; // S
+  if (keyIsDown(65)) heartX -= heartSpeed; // A
+  if (keyIsDown(68)) heartX += heartSpeed; // D
 
-heartX = constrain(heartX, 198, 442);
-heartY = constrain(heartY, 198, 277);
+  heartX = constrain(heartX, 198, 442);
+  heartY = constrain(heartY, 198, 277);
 }
