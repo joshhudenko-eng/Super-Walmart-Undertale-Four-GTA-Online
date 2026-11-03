@@ -36,7 +36,11 @@ function setup() {
 
 function draw() {
 
-  // Draw current level background
+
+    drawLives()
+    
+  // Draw current level
+  // background
   drawLevelBackground();
 
   // Draw boss HP bar

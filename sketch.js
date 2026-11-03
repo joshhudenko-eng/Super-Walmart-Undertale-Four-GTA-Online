@@ -8,10 +8,7 @@ const heartSpeed = 3;
 let rocks = []
 let gameOver = false
 let lasers = []
-let lives = 3
-function setup() {
-  createCanvas(windowWidth, windowHeight);
-}
+let lives = 3 //amount of hearts in top left
 
 function draw() {
   background("black");
@@ -22,5 +19,4 @@ function draw() {
   drawPopupOverlay()
   drawHeart()
   checkPopupHeartCollision()
-  drawLives()
 }
