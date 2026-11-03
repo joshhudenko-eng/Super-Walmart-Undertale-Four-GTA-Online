@@ -5,6 +5,7 @@ let popupLoaded = false;
 let popupSound = new Audio(
   "PopUp/Sound/gualmartSound.mp3"
 );
+popupSound.volume = 1.0;
 
 let popupSoundEnabled = false;
 

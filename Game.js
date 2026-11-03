@@ -10,6 +10,10 @@ let attackSpeed = 8;
 let bossHP = 500;
 let maxBossHP = 500;
 let bossLevel = 1;
+let bgMusic = new Audio("PopUp/Sound/BGmusic.mp3");
+
+bgMusic.loop = true;
+bgMusic.volume = 0.1;
 
 // Load backgrounds
 let marioBG = new Image();
@@ -95,6 +99,14 @@ function draw() {
     drawPopupOverlay();
   }
 
+}
+
+function startBackgroundMusic() {
+  if (bgMusic.paused) {
+    bgMusic.play().catch(function(error) {
+      console.log("Music error:", error);
+    });
+  }
 }
 
 
@@ -279,6 +291,7 @@ if (typeof drawHeart === "function") {
 
 function mousePressed() {
 
+  startBackgroundMusic();
   // Check if FIGHT button was clicked
   if (
     battleScreen === "menu" &&
@@ -310,6 +323,10 @@ function mousePressed() {
 
 // Keyboard controls
 function keyPressed() {
+
+  if (key === "g" || key === "G") {
+  showWasted();
+}
 
   // Press Space to attack
   if (key === " " && battleScreen === "fight") {
