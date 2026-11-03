@@ -2,10 +2,16 @@
 let wastedShown = false;
 
 function showWasted() {
+
   if (wastedShown) return;
 
+  // Find the game canvas
   let canvas = document.querySelector("canvas");
-  if (!canvas) return;
+
+  if (!canvas) {
+    console.error("Canvas not found!");
+    return;
+  }
 
   wastedShown = true;
 
@@ -14,8 +20,15 @@ function showWasted() {
     bgMusic.pause();
   }
 
-  // Create overlay matching the game canvas
+  // Stop Gualmart sound
+  if (typeof popupSound !== "undefined") {
+    popupSound.pause();
+  }
+
+  // Get canvas position and size
   let bounds = canvas.getBoundingClientRect();
+
+  // Create gray transparent overlay
   let overlay = document.createElement("div");
 
   overlay.style.position = "fixed";
@@ -23,27 +36,42 @@ function showWasted() {
   overlay.style.top = bounds.top + "px";
   overlay.style.width = bounds.width + "px";
   overlay.style.height = bounds.height + "px";
-  overlay.style.background = "black";
+
+  overlay.style.background = "rgba(100,100,100,0.65)";
   overlay.style.zIndex = "9999";
 
-  // Create the WASTED video
-  let video = document.createElement("video");
-  video.src = "Videos/wasted.mp4";
-  video.style.width = "100%";
-  video.style.height = "100%";
-  video.style.objectFit = "cover";
+  overlay.style.display = "flex";
+  overlay.style.alignItems = "center";
+  overlay.style.justifyContent = "center";
 
-  video.playsInline = true;
-  video.controls = false;
+  // Create dark horizontal strip
+  let strip = document.createElement("div");
 
-  overlay.appendChild(video);
+  strip.style.width = "100%";
+  strip.style.height = "100px";
+  strip.style.background = "rgba(0,0,0,0.5)";
+
+  strip.style.display = "flex";
+  strip.style.alignItems = "center";
+  strip.style.justifyContent = "center";
+
+  // Create WASTED text
+  let wastedText = document.createElement("div");
+
+  wastedText.textContent = "WASTED";
+
+  wastedText.style.color = "#cc3333";
+  wastedText.style.fontSize = "64px";
+  wastedText.style.fontFamily = "Arial, sans-serif";
+  wastedText.style.fontWeight = "bold";
+  wastedText.style.letterSpacing = "4px";
+  wastedText.style.textShadow = "2px 2px 8px black";
+
+  // Put everything together
+  strip.appendChild(wastedText);
+  overlay.appendChild(strip);
   document.body.appendChild(overlay);
 
-  // Play video once
-  video.play().catch(() => {
-    // Some browsers require a click for audio
-    overlay.addEventListener("click", () => {
-      video.play();
-    }, { once: true });
-  });
+  // Freeze the game AFTER creating overlay
+  noLoop();
 }
