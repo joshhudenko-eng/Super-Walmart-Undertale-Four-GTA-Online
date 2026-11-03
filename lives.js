@@ -11,7 +11,7 @@ function drawSingleLife() {
   rectMode(CENTER);
   fill("#ff1f1f");
   noStroke();
-  rect(lifetX - 4.5, lifeY - 5.9, 6, 3);
+  rect(lifeX - 4.5, lifeY - 5.9, 6, 3);
 
   rectMode(CENTER);
   fill("#ff1f1f");
@@ -35,8 +35,8 @@ function drawSingleLife() {
 function drawLives() {
     for (let i = 0; i < lives; i++) {
         push();
-        drawSingleLife();
         translate(30 + i * 35, 30);
+        drawSingleLife();
         pop();
     }
 }

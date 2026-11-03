@@ -1,4 +1,4 @@
-function drawHeart(heartX, heartY){
+function drawHeart(){
   rectMode(CENTER);
   fill("#ff1f1f");
   noStroke();
