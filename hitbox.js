@@ -19,9 +19,9 @@ function checkPopupHeartCollision() {
     popBottom > heartTop &&
     popTop < heartBottom;
 
-  if (collision) {
+  if (collision === true) {
     fill("green")
     textSize(20)
-    text("U LOSE", 300, 100)
+    text("AD HERE", 300, 100)
   }
 }
