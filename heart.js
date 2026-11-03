@@ -1,42 +1,42 @@
-function drawHeart() {
+function drawHeart(x = heartX, y = heartY){
   rectMode(CENTER);
   fill("#ff1f1f");
   noStroke();
-  rect(heartX + 4.5, heartY - 5.9, 6, 3);
-
-  rectMode(CENTER);
-  fill("#ff1f1f");
-  noStroke();
-  rect(heartX - 4.5, heartY - 5.9, 6, 3);
+  rect(x + 4.5, y - 5.9, 6, 3);
 
   rectMode(CENTER);
   fill("#ff1f1f");
   noStroke();
-  rect(heartX, heartY - 2.9, 15, 3);
+  rect(x - 4.5, y - 5.9, 6, 3);
 
   rectMode(CENTER);
   fill("#ff1f1f");
   noStroke();
-  rect(heartX, heartY, 15, 3);
+  rect(x, y - 2.9, 15, 3);
+
+  rectMode(CENTER);
+  fill("#ff1f1f");
+  noStroke();
+  rect(x, y, 15, 3);
 
   fill("#ff1f1f");
   noStroke();
-  rect(heartX, heartY + 2.9, 10, 3);
+  rect(x, y + 2.9, 10, 3);
 
   fill("#ff1f1f");
   noStroke();
-  rect(heartX, heartY + 5.9, 5, 3);
+  rect(x, y + 5.9, 5, 3);
 
   noFill(); //hitbox
   strokeWeight(1);
   stroke("#ffffff");
-  rect(heartX, heartY, 15, 15);
+  rect(x, y, 15, 15);
 
-  if (keyIsDown("w")) heartY -= heartSpeed;
-  if (keyIsDown("s")) heartY += heartSpeed;
-  if (keyIsDown("a")) heartX -= heartSpeed;
-  if (keyIsDown("d")) heartX += heartSpeed;
+  if (keyIsDown("w")) y -= heartSpeed;
+  if (keyIsDown("s")) y += heartSpeed;
+  if (keyIsDown("a")) x -= heartSpeed;
+  if (keyIsDown("d")) x += heartSpeed;
 
-heartX = constrain(heartX, 198, 442);
-heartY = constrain(heartY, 198, 277);
+x = constrain(heartX, 198, 442);
+y = constrain(heartY, 198, 277);
 }
