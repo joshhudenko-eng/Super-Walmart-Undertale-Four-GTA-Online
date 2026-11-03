@@ -1,3 +1,4 @@
+
 let popupImage = new Image();
 let popupLoaded = false;
 
@@ -7,16 +8,25 @@ let popupSound = new Audio(
 
 let popupSoundEnabled = false;
 
+// Popup position and size
 // Image position and size
 let popupX = 100;
 let popupY = 100;
-let popupWidth = 100;
-let popupHeight = 90;
+let popupWidth = 200;
+let popupHeight = 100;
 
 // Movement speed
-let popupVX = 3;
-let popupVY = 2;
+let popupVX = 0.5;
+let popupVY = 0.5;
 
+// Load the popup image
+popupImage.onload = function() {
+  popupLoaded = true;
+  console.log("Popup image loaded!");
+};
+
+popupImage.onerror = function() {
+  console.error("Popup image failed to load!");
 // Load the image
 popupImage.onload = function() {
   popupLoaded = true;
@@ -28,6 +38,7 @@ popupImage.onerror = function() {
 
 popupImage.src = "PopUp/Images/FaceAd.png";
 
+// Prepare sound
 // Load sound
 popupSound.preload = "auto";
 
@@ -39,6 +50,34 @@ function enablePopupSound() {
   }
 }
 
+// Play the popup sound safely
+function playPopupSound() {
+  if (!popupSound) return;
+
+  if (popupSound.readyState < 2) {
+    return;
+  }
+
+  try {
+    popupSound.pause();
+    popupSound.currentTime = 0;
+
+    popupSound.play().catch(function(error) {
+      console.warn("Popup sound could not play:", error);
+    });
+
+  } catch (error) {
+    console.warn("Popup sound error:", error);
+  }
+}
+
+// Move and draw popup
+function drawPopupOverlay() {
+
+  // Don't draw until image is loaded
+  if (!popupLoaded) return;
+
+  // Move popup
 // Play sound
 function playPopupSound() {
   popupSound.pause();
@@ -61,6 +100,7 @@ function drawPopupOverlay() {
   // Left wall
   if (popupX <= 0) {
     popupX = 0;
+    popupVX = Math.abs(popupVX);
     popupVX = abs(popupVX);
     hitWall = true;
   }
@@ -68,6 +108,7 @@ function drawPopupOverlay() {
   // Right wall
   if (popupX >= width - popupWidth) {
     popupX = width - popupWidth;
+    popupVX = -Math.abs(popupVX);
     popupVX = -abs(popupVX);
     hitWall = true;
   }
@@ -75,6 +116,7 @@ function drawPopupOverlay() {
   // Top wall
   if (popupY <= 0) {
     popupY = 0;
+    popupVY = Math.abs(popupVY);
     popupVY = abs(popupVY);
     hitWall = true;
   }
@@ -82,6 +124,11 @@ function drawPopupOverlay() {
   // Bottom wall
   if (popupY >= height - popupHeight) {
     popupY = height - popupHeight;
+    popupVY = -Math.abs(popupVY);
+    hitWall = true;
+  }
+
+  // Play sound when hitting a wall
     popupVY = -abs(popupVY);
     hitWall = true;
   }
@@ -91,6 +138,7 @@ function drawPopupOverlay() {
     playPopupSound();
   }
 
+  // Draw popup over the game
   // Draw on top of the game
   drawingContext.drawImage(
     popupImage,
@@ -99,4 +147,5 @@ function drawPopupOverlay() {
     popupWidth,
     popupHeight
   );
+}
 }
