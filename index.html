@@ -1,39 +1,24 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Undertale Boss Fight</title>
-
-  <!-- Load p5.js -->
-  <script src="https://cdn.jsdelivr.net/npm/p5@2.3.4/lib/p5.js"></script>
-
-  <!-- Load sound library -->
-  <script src="https://cdn.jsdelivr.net/npm/p5.sound@0.4.1/dist/p5.sound.min.js"></script>
-
-  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
+
+  <!-- p5.js must load before the game scripts. -->
+  <script src="https://cdn.jsdelivr.net/npm/p5@2.3.4/lib/p5.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/p5.sound@0.4.1/dist/p5.sound.min.js"></script>
 </head>
-
 <body>
-  <main>
-  </main>
+  <main></main>
 
-  <!-- Main sketch -->
+  <!-- Shared game state and systems. Load each script exactly once. -->
   <script src="sketch.js"></script>
-
-  <!-- Obstacles and collision -->
+  <script src="heart.js"></script>
   <script src="rocks.js"></script>
   <script src="hitbox.js"></script>
-
-  <!-- Player heart -->
   <script src="heart.js"></script>
-
-  <script src="PopUp/popupOverlay.js"></script>
-
-  <!-- Boss fight -->
   <script src="Game.js"></script>
-
 </body>
 </html>

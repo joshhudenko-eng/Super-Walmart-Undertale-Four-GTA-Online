@@ -9,6 +9,7 @@ let popupSound = new Audio(
 let popupSoundEnabled = false;
 
 // Popup position and size
+// Image position and size
 let popupX = 100;
 let popupY = 100;
 let popupWidth = 100;
@@ -26,11 +27,19 @@ popupImage.onload = function() {
 
 popupImage.onerror = function() {
   console.error("Popup image failed to load!");
+// Load the image
+popupImage.onload = function() {
+  popupLoaded = true;
+};
+
+popupImage.onerror = function() {
+  console.error("Popup image could not load");
 };
 
 popupImage.src = "PopUp/Images/FaceAd.png";
 
 // Prepare sound
+// Load sound
 popupSound.preload = "auto";
 
 // Enable sound when player clicks
@@ -69,6 +78,20 @@ function drawPopupOverlay() {
   if (!popupLoaded) return;
 
   // Move popup
+// Play sound
+function playPopupSound() {
+  popupSound.pause();
+  popupSound.currentTime = 0;
+
+  popupSound.play().catch(function(error) {
+    console.error("Popup sound error:", error);
+  });
+}
+
+// Draw and move the popup
+function drawPopupOverlay() {
+  if (!popupLoaded) return;
+
   popupX += popupVX;
   popupY += popupVY;
 
@@ -78,6 +101,7 @@ function drawPopupOverlay() {
   if (popupX <= 0) {
     popupX = 0;
     popupVX = Math.abs(popupVX);
+    popupVX = abs(popupVX);
     hitWall = true;
   }
 
@@ -85,6 +109,7 @@ function drawPopupOverlay() {
   if (popupX >= width - popupWidth) {
     popupX = width - popupWidth;
     popupVX = -Math.abs(popupVX);
+    popupVX = -abs(popupVX);
     hitWall = true;
   }
 
@@ -92,6 +117,7 @@ function drawPopupOverlay() {
   if (popupY <= 0) {
     popupY = 0;
     popupVY = Math.abs(popupVY);
+    popupVY = abs(popupVY);
     hitWall = true;
   }
 
@@ -103,11 +129,17 @@ function drawPopupOverlay() {
   }
 
   // Play sound when hitting a wall
+    popupVY = -abs(popupVY);
+    hitWall = true;
+  }
+
+  // Play sound when bouncing
   if (hitWall && popupSoundEnabled) {
     playPopupSound();
   }
 
   // Draw popup over the game
+  // Draw on top of the game
   drawingContext.drawImage(
     popupImage,
     popupX,
@@ -115,4 +147,5 @@ function drawPopupOverlay() {
     popupWidth,
     popupHeight
   );
+}
 }
