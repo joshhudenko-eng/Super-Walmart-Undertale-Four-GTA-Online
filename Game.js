@@ -14,67 +14,7 @@ let battleScreen = "menu";
 let resultEndTime = 0;
 let resultDelay = 1000;
 
-function setup() {
-  createCanvas(640, 360);
-}
 
-function draw() {
-  background(12);
-
-  drawBossHP();
-
-  // Battle menu
-  if (battleScreen === "menu") {
-    drawMenu();
-  }
-
-  // Moving attack bar
-  else if (battleScreen === "fight") {
-    moveAttackLine();
-    drawAttackBar();
-
-    fill(255);
-    noStroke();
-    textAlign(CENTER, CENTER);
-    textSize(18);
-    text("PRESS SPACE TO ATTACK", width / 2, 300);
-  }
-
-  // Show damage before switching scenes
-  else if (battleScreen === "result") {
-    drawAttackBar();
-
-    fill(255);
-    noStroke();
-    textAlign(CENTER, CENTER);
-    textSize(22);
-
-    text("Damage: " + lastDamage, width / 2, 300);
-
-    // Wait 1.5 seconds before continuing
-    if (millis() >= resultEndTime) {
-      if (bossHP <= 0) {
-        battleScreen = "win";
-      } else {
-        battleScreen = "dodge";
-      }
-    }
-  }
-
-  // Temporary dodge phase
-  else if (battleScreen === "dodge") {
-    drawDodgeScreen();
-  }
-
-  // Victory screen
-  else if (battleScreen === "win") {
-    fill(255);
-    noStroke();
-    textAlign(CENTER, CENTER);
-    textSize(30);
-    text("YOU WIN!", width / 2, 210);
-  }
-}
 
 // Draw boss name and HP
 function drawBossHP() {

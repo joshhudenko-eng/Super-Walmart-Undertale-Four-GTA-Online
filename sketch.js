@@ -7,7 +7,6 @@ const heartSpeed = 3;
 
 let rocks = []
 let gameOver = false
-let lasers = []
 let lives = 3
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -15,6 +14,62 @@ function setup() {
 
 function draw() {
   background("black");
+
+  drawBossHP();
+
+  // Battle menu
+  if (battleScreen === "menu") {
+    drawMenu();
+  }
+
+  // Moving attack bar
+  else if (battleScreen === "fight") {
+    moveAttackLine();
+    drawAttackBar();
+
+    fill(255);
+    noStroke();
+    textAlign(CENTER, CENTER);
+    textSize(18);
+    text("PRESS SPACE TO ATTACK", width / 2, 300);
+  }
+
+  // Show damage before switching scenes
+  else if (battleScreen === "result") {
+    drawAttackBar();
+
+    fill(255);
+    noStroke();
+    textAlign(CENTER, CENTER);
+    textSize(22);
+
+    text("Damage: " + lastDamage, width / 2, 300);
+
+    // Wait 1.5 seconds before continuing
+    if (millis() >= resultEndTime) {
+      if (bossHP <= 0) {
+        battleScreen = "win";
+      } else {
+        battleScreen = "dodge";
+      }
+    }
+  }
+
+  // Temporary dodge phase
+  else if (battleScreen === "dodge") {
+    drawDodgeScreen();
+  }
+
+  // Victory screen
+  else if (battleScreen === "win") {
+    fill(255);
+    noStroke();
+    textAlign(CENTER, CENTER);
+    textSize(30);
+    text("YOU WIN!", width / 2, 210);
+  }
+
+//PROJECTILE CODE
   if (!gameOver){
   moveRocks()
   drawHeart()
@@ -27,4 +82,14 @@ function draw() {
     newRocks()
   }
   //died()
+
+
+  //SPEAR CODE
+  moveSpears()
+  drawSpears()
+
+
+
+
+
 }
