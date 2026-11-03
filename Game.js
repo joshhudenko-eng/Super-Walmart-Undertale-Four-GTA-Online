@@ -65,6 +65,7 @@ function draw() {
         battleScreen = "dodge";
       }
     }
+    drawPopupOverlay();
   }
 
   // Dodge phase
@@ -233,8 +234,6 @@ function drawAttackBar() {
 
 
 // Dodge screen
-
-
 function drawDodgeScreen() {
 
   // Draw the white dodge arena
@@ -265,6 +264,8 @@ if (typeof drawHeart === "function") {
 
 // Click FIGHT to start attacking
 function mousePressed() {
+
+  enablePopupSound();
 
   if (
     battleScreen === "menu" &&
