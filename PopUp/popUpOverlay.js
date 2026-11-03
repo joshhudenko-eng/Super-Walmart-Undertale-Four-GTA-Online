@@ -11,12 +11,12 @@ let popupSoundEnabled = false;
 // Popup position and size
 let popupX = 100;
 let popupY = 100;
-let popupWidth = 100;
-let popupHeight = 90;
+let popupWidth = 200;
+let popupHeight = 100;
 
 // Movement speed
-let popupVX = 3;
-let popupVY = 2;
+let popupVX = 0.5;
+let popupVY = 0.5;
 
 // Load the popup image
 popupImage.onload = function() {

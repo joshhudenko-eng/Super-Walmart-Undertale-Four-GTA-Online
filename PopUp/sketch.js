@@ -101,8 +101,8 @@ function createItem() {
   item = {
     x: 100,
     y: 100,
-    vx: 2,
-    vy: 2
+    vx: 100,
+    vy: 100
   };
 }
 
