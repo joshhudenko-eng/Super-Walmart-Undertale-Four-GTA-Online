@@ -234,8 +234,6 @@ function drawAttackBar() {
 
 
 // Dodge screen
-
-
 function drawDodgeScreen() {
 
   // Draw the white dodge arena
