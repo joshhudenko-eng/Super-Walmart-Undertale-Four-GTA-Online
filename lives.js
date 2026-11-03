@@ -1,6 +1,6 @@
 let lifeX = 0;
 let lifeY = 0;
-let lives = 3;
+let lives = 3;  //change for amount of lives
 
 function drawSingleLife() {
   rectMode(CENTER);
