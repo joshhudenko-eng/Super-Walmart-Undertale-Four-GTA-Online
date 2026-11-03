@@ -29,10 +29,13 @@ function setup() {
   createCanvas(640, 360);
 }
 
-function draw() {
-  drawLevelBackground(12);
 
-  // Boss HP bar stays visible
+function draw() {
+
+  // Draw current level background
+  drawLevelBackground();
+
+  // Draw boss HP bar
   drawBossHP();
 
   // Battle menu
@@ -49,7 +52,6 @@ function draw() {
     noStroke();
     textAlign(CENTER, CENTER);
     textSize(18);
-
     text("PRESS SPACE TO ATTACK", width / 2, 300);
   }
 
@@ -65,27 +67,36 @@ function draw() {
         battleScreen = "dodge";
       }
     }
-    drawPopupOverlay();
   }
 
   // Dodge phase
   else if (battleScreen === "dodge") {
-  drawDodgeScreen();
+    drawDodgeScreen();
 
-  // Press R to return to the fight menu
-  if (keyIsDown(82)) {
-    battleScreen = "menu";
+    // Press R to return to fight menu
+    if (keyIsDown(82)) {
+      battleScreen = "menu";
+    }
   }
+
   // Victory screen
   else if (battleScreen === "win") {
     fill(255);
     noStroke();
     textAlign(CENTER, CENTER);
     textSize(30);
-
     text("YOU WIN!", width / 2, 210);
   }
-}}
+
+  // GUALMART POPUP
+  // Always draw this LAST and outside
+  // all battleScreen conditions
+  if (typeof drawPopupOverlay === "function") {
+    drawPopupOverlay();
+  }
+
+}
+
 
 
 // Draw only the boss HP bar
@@ -265,10 +276,10 @@ if (typeof drawHeart === "function") {
 
 
 // Click FIGHT to start attacking
+
 function mousePressed() {
 
-  enablePopupSound();
-
+  // Check if FIGHT button was clicked
   if (
     battleScreen === "menu" &&
     mouseX >= 240 &&
@@ -276,15 +287,25 @@ function mousePressed() {
     mouseY >= 205 &&
     mouseY <= 265
   ) {
-
-    // Reset attack position
     attackX = barX;
     attackSpeed = abs(attackSpeed);
 
-    // Open attack screen
+    // Open fight screen
     battleScreen = "fight";
+
+    console.log("FIGHT button clicked!");
+  }
+
+  // Enable popup sound without breaking the game
+  if (typeof enablePopupSound === "function") {
+    try {
+      enablePopupSound();
+    } catch (error) {
+      console.error("Popup sound error:", error);
+    }
   }
 }
+
 
 
 // Keyboard controls

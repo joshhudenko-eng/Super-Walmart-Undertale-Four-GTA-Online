@@ -92,6 +92,9 @@ function draw() {
     textSize(14);
     text("Click to enable sound", 10, 20);
   }
+  if (typeof drawPopupOverlay === "function") {
+  drawPopupOverlay();
+}
 }
 
 function createItem() {
