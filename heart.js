@@ -37,6 +37,6 @@ function drawHeart() {
   if (keyIsDown("a")) heartX -= heartSpeed;
   if (keyIsDown("d")) heartX += heartSpeed;
 
-  heartX = constrain(heartX, 198, 442);
+heartX = constrain(heartX, 198, 442);
 heartY = constrain(heartY, 198, 277);
 }
