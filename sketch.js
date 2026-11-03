@@ -17,14 +17,8 @@ function draw() {
   background("black");
   if (!gameOver){
   moveRocks()
-  drawHeart()
     }
   drawRocks()
 
-  //to change amount of projectiles change this number ( the lower the more spawn)
-    const spawnRate = 10
-  if (frameCount % spawnRate === 0 && !gameOver){
-    newRocks()
-  }
-  //died()
+  drawHeart()
 }
