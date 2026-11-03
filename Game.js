@@ -25,23 +25,19 @@ let battleScreen = "menu";
 let resultEndTime = 0;
 let resultDelay = 1000;
 
-function setup() {
-  createCanvas(640, 360);
-}
-
-function draw() {
+// Called by the single global draw() in sketch.js.
+function drawBossFight() {
   drawLevelBackground(12);
 
-  // Boss HP bar stays visible
-  drawBossHP();
-
-  // Battle menu
-  if (battleScreen === "menu") {
-    drawMenu();
+  if (typeof drawBoss1 === "function" && underblaster) {
+    drawBoss1();
   }
 
-  // Attack phase
-  else if (battleScreen === "fight") {
+  drawBossHP();
+
+  if (battleScreen === "menu") {
+    drawMenu();
+  } else if (battleScreen === "fight") {
     moveAttackLine();
     drawAttackBar();
 
@@ -49,69 +45,43 @@ function draw() {
     noStroke();
     textAlign(CENTER, CENTER);
     textSize(18);
-
     text("PRESS SPACE TO ATTACK", width / 2, 300);
-  }
-
-  // Freeze attack bar after pressing Space
-  else if (battleScreen === "result") {
+  } else if (battleScreen === "result") {
     drawAttackBar();
 
-    // Wait 1 second before changing scenes
     if (millis() >= resultEndTime) {
-      if (bossHP <= 0) {
-        battleScreen = "win";
-      } else {
-        battleScreen = "dodge";
-      }
+      battleScreen = bossHP <= 0 ? "win" : "dodge";
     }
-    drawPopupOverlay();
-  }
 
-  // Dodge phase
-  else if (battleScreen === "dodge") {
-  drawDodgeScreen();
-
-  // Press R to return to the fight menu
-  if (keyIsDown(82)) {
-    battleScreen = "menu";
-  }
-  // Victory screen
-  else if (battleScreen === "win") {
+    if (typeof drawPopupOverlay === "function") {
+      drawPopupOverlay();
+    }
+  } else if (battleScreen === "dodge") {
+    drawDodgeScreen();
+    moveRocks();
+    drawRocks();
+  } else if (battleScreen === "win") {
     fill(255);
     noStroke();
     textAlign(CENTER, CENTER);
     textSize(30);
-
     text("YOU WIN!", width / 2, 210);
   }
-}}
-
+}
 
 // Draw only the boss HP bar
 function drawBossHP() {
-
-  // Gray background
   fill(70);
   noStroke();
   rect(180, 115, 280, 12);
 
-  // Red health bar
   fill(230, 65, 65);
-
-  rect(
-    180,
-    115,
-    280 * (bossHP / maxBossHP),
-    12
-  );
+  rect(180, 115, 280 * (bossHP / maxBossHP), 12);
 }
-
 
 // Draw FIGHT button
 function drawMenu() {
-
-  let hover =
+  const hover =
     mouseX >= 240 &&
     mouseX <= 400 &&
     mouseY >= 205 &&
@@ -120,67 +90,46 @@ function drawMenu() {
   stroke(hover ? color(255, 220, 60) : color(255));
   strokeWeight(3);
   noFill();
-
   rect(240, 205, 160, 60);
 
   noStroke();
   fill(hover ? color(255, 220, 60) : color(255));
-
   textAlign(CENTER, CENTER);
   textSize(28);
-
   text("FIGHT", 320, 235);
 }
 
-
 // Move the attack line back and forth
 function moveAttackLine() {
-
   attackX += attackSpeed;
 
-  // Right wall
   if (attackX >= barX + barWidth) {
     attackX = barX + barWidth;
     attackSpeed = -abs(attackSpeed);
   }
 
-  // Left wall
   if (attackX <= barX) {
     attackX = barX;
     attackSpeed = abs(attackSpeed);
   }
 }
 
-
 // Draw the attack bar
 function drawAttackBar() {
+  const center = barX + barWidth / 2;
+  const ctx = drawingContext;
 
-  let center = barX + barWidth / 2;
-  let ctx = drawingContext;
-
-  // White border
   noFill();
   stroke(255);
   strokeWeight(2);
-
-  rect(
-    barX - 8,
-    barY - 46,
-    barWidth + 16,
-    92
-  );
+  rect(barX - 8, barY - 46, barWidth + 16, 92);
 
   ctx.save();
 
-  // Left triangle gradient
-  let leftGradient = ctx.createLinearGradient(
-    barX, 0, center, 0
-  );
-
+  const leftGradient = ctx.createLinearGradient(barX, 0, center, 0);
   leftGradient.addColorStop(0, "rgb(230,45,50)");
   leftGradient.addColorStop(0.5, "rgb(255,215,50)");
   leftGradient.addColorStop(1, "rgb(40,220,90)");
-
   ctx.fillStyle = leftGradient;
 
   ctx.beginPath();
@@ -190,15 +139,10 @@ function drawAttackBar() {
   ctx.closePath();
   ctx.fill();
 
-  // Right triangle gradient
-  let rightGradient = ctx.createLinearGradient(
-    center, 0, barX + barWidth, 0
-  );
-
+  const rightGradient = ctx.createLinearGradient(center, 0, barX + barWidth, 0);
   rightGradient.addColorStop(0, "rgb(40,220,90)");
   rightGradient.addColorStop(0.5, "rgb(255,215,50)");
   rightGradient.addColorStop(1, "rgb(230,45,50)");
-
   ctx.fillStyle = rightGradient;
 
   ctx.beginPath();
@@ -210,21 +154,12 @@ function drawAttackBar() {
 
   ctx.restore();
 
-  // Moving white attack line
   stroke(255);
   strokeWeight(4);
+  line(attackX, barY - 44, attackX, barY + 44);
 
-  line(
-    attackX,
-    barY - 44,
-    attackX,
-    barY + 44
-  );
-
-  // White arrow above line
   noStroke();
   fill(255);
-
   triangle(
     attackX - 6, barY - 51,
     attackX + 6, barY - 51,
@@ -232,11 +167,8 @@ function drawAttackBar() {
   );
 }
 
-
 // Dodge screen
 function drawDodgeScreen() {
-
-  // Draw the white dodge arena
   push();
   rectMode(CORNER);
   noFill();
@@ -245,13 +177,12 @@ function drawDodgeScreen() {
   rect(190, 190, 260, 95);
   pop();
 
-if (typeof drawHeart === "function") {
-  push();
-  drawHeart();
-  pop();
-}
+  if (typeof drawHeart === "function") {
+    push();
+    drawHeart();
+    pop();
+  }
 
-  // Return instructions
   push();
   fill(255);
   noStroke();
@@ -261,11 +192,11 @@ if (typeof drawHeart === "function") {
   pop();
 }
 
-
 // Click FIGHT to start attacking
 function mousePressed() {
-
-  enablePopupSound();
+  if (typeof enablePopupSound === "function") {
+    enablePopupSound();
+  }
 
   if (
     battleScreen === "menu" &&
@@ -274,52 +205,28 @@ function mousePressed() {
     mouseY >= 205 &&
     mouseY <= 265
   ) {
-
-    // Reset attack position
     attackX = barX;
     attackSpeed = abs(attackSpeed);
-
-    // Open attack screen
     battleScreen = "fight";
   }
 }
 
-
 // Keyboard controls
 function keyPressed() {
-
-  // Press Space to attack
   if (key === " " && battleScreen === "fight") {
+    const center = barX + barWidth / 2;
+    const distanceFromCenter = abs(attackX - center);
 
-    let center = barX + barWidth / 2;
-
-    // Distance from middle
-    let distanceFromCenter = abs(attackX - center);
-
-    // Calculate damage
     let damage = round(
-      map(
-        distanceFromCenter,
-        0,
-        barWidth / 2,
-        100,
-        0
-      )
+      map(distanceFromCenter, 0, barWidth / 2, 100, 0)
     );
-
     damage = constrain(damage, 0, 100);
 
-    // Damage the boss
     damageBoss(damage);
-
-    // Freeze the attack line
     battleScreen = "result";
-
-    // Start 1-second delay
     resultEndTime = millis() + resultDelay;
   }
 
-  // Return from dodge phase
   if (
     (key === "r" || key === "R") &&
     battleScreen === "dodge"
@@ -327,7 +234,7 @@ function keyPressed() {
     battleScreen = "menu";
   }
 
-  // Prevent Space from scrolling page
+  // Prevent Space from scrolling the page.
   if (key === " ") {
     return false;
   }
@@ -337,46 +244,25 @@ function drawLevelBackground() {
   background(12);
 
   let bg = null;
+  if (bossLevel === 2) bg = marioBG;
+  if (bossLevel === 3) bg = walmartBG;
 
-  if (bossLevel === 2) {
-    bg = marioBG;
-  }
-
-  if (bossLevel === 3) {
-    bg = walmartBG;
-  }
-
-  // Draw the selected background
   if (bg && bg.complete && bg.naturalWidth > 0) {
-    drawingContext.drawImage(
-      bg, 0, 0, width, height
-    );
+    drawingContext.drawImage(bg, 0, 0, width, height);
   }
 }
 
-
 function damageBoss(damage) {
-
-  let level2HP = Math.round(maxBossHP * 2 / 3);
-  let level3HP = Math.round(maxBossHP / 3);
+  const level2HP = Math.round(maxBossHP * 2 / 3);
+  const level3HP = Math.round(maxBossHP / 3);
 
   if (bossLevel === 1) {
     bossHP = max(level2HP, bossHP - damage);
-
-    if (bossHP <= level2HP) {
-      bossLevel = 2;
-    }
-  }
-
-  else if (bossLevel === 2) {
+    if (bossHP <= level2HP) bossLevel = 2;
+  } else if (bossLevel === 2) {
     bossHP = max(level3HP, bossHP - damage);
-
-    if (bossHP <= level3HP) {
-      bossLevel = 3;
-    }
-  }
-
-  else if (bossLevel === 3) {
+    if (bossHP <= level3HP) bossLevel = 3;
+  } else if (bossLevel === 3) {
     bossHP = max(0, bossHP - damage);
   }
 }
