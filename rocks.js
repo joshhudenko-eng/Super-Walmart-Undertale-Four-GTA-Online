@@ -7,7 +7,7 @@ function newRocks(){
   const speed = random(3, 5)
 
   rocks.push({
-    x: x,
+    x:x,
     y:y,
     dx: cos(angle) * speed,
     dy: sin(angle) * speed,
@@ -35,4 +35,8 @@ function drawRocks(){
   if (frameCount % spawnRate === 0 && !gameOver){
     newRocks()
   }
+}
+
+if (rocks[i].diameter < heartX + 15 && heartY + 15){
+  text("U LOSE", 100, 100)
 }
