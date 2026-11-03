@@ -1,5 +1,5 @@
-let collisionImage = new Image();
-collisionImage.src = "PopUp/Images/FaceAd.png";
+// let collisionImage = new Image();
+// collisionImage.src = "PopUp/Images/FaceAd.png";
 
 function checkPopupHeartCollision() {
 
@@ -26,7 +26,7 @@ function checkPopupHeartCollision() {
     if (collision) {
         push();
         imageMode(CENTER);
-        loadImage("Images/FaceAd.png", width/2, height/2, 200, 150)
+        loadImage("FaceAd.png", width/2, height/2, 200, 150)
         pop();
     }
 }
