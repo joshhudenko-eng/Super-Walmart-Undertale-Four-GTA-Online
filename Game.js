@@ -65,6 +65,7 @@ function draw() {
         battleScreen = "dodge";
       }
     }
+    drawPopupOverlay();
   }
 
   // Dodge phase
@@ -265,6 +266,8 @@ if (typeof drawHeart === "function") {
 
 // Click FIGHT to start attacking
 function mousePressed() {
+
+  enablePopupSound();
 
   if (
     battleScreen === "menu" &&
