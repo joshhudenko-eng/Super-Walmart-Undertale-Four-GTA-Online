@@ -7,7 +7,7 @@ function newRocks(){
   const speed = random(3, 5)
 
   rocks.push({
-    x: x,
+    x:x,
     y:y,
     dx: cos(angle) * speed,
     dy: sin(angle) * speed,
@@ -28,5 +28,11 @@ function drawRocks(){
   fill(rocks[i].color)
   circle(rocks[i].x,rocks[i].y,rocks[i].diameter)
   pop()
+  }
+
+  //to change amount of projectiles change this number ( the lower the more spawn)
+    const spawnRate = 10
+  if (frameCount % spawnRate === 0 && !gameOver){
+    newRocks()
   }
 }
