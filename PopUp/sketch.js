@@ -30,7 +30,7 @@ async function setup() {
   }
 }
 
-function draw() {
+function drawTwo() {
   background(0);
 
   if (!gualmart || !item) {
