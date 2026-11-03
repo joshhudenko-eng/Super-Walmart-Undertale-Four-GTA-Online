@@ -22,4 +22,5 @@ function draw() {
   drawPopupOverlay()
   drawHeart()
   checkPopupHeartCollision()
+  drawLives()
 }
