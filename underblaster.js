@@ -1,0 +1,6 @@
+function drawBoss() {
+  
+    imageMode(CENTER);
+  
+    
+}
