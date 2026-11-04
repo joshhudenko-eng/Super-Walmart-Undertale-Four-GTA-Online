@@ -1,6 +1,6 @@
 function newRocks(){
-    const x = width/2
-    const y = height/2
+  const x = width/2
+  const y = height/2
 
   const angle = atan2(heartY - y, heartX - x)
   //to change the speed of the projectiles change theese values
@@ -15,23 +15,25 @@ function newRocks(){
     diameter: random(5,20),
   })
 }
+
 function moveRocks(){
-for (let i= 0; i < rocks.length; i++){
-  rocks[i].x = rocks[i].x + rocks[i].dx
-  rocks[i].y = rocks[i].y + rocks[i].dy
+  for (let i= 0; i < rocks.length; i++){
+    rocks[i].x = rocks[i].x + rocks[i].dx
+    rocks[i].y = rocks[i].y + rocks[i].dy
+  }
 }
-}
+
 function drawRocks(){
   for ( let i = 0; i < rocks.length; i++){
-  push()
-  noStroke()
-  fill(rocks[i].color)
-  circle(rocks[i].x,rocks[i].y,rocks[i].diameter)
-  pop()
+    push()
+    noStroke()
+    fill(rocks[i].color)
+    circle(rocks[i].x,rocks[i].y,rocks[i].diameter)
+    pop()
   }
 
   //to change amount of projectiles change this number ( the lower the more spawn)
-    const spawnRate = 10
+  const spawnRate = 10
   if (frameCount % spawnRate === 0 && !gameOver){
     newRocks()
   }

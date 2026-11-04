@@ -1,4 +1,3 @@
-
 let barX = 90;
 let barY = 190;
 let barWidth = 460;
@@ -10,8 +9,8 @@ let attackSpeed = 8;
 let bossHP = 500;
 let maxBossHP = 500;
 let bossLevel = 1;
-let bgMusic = new Audio("PopUp/Sound/BGmusic.mp3");
 
+let bgMusic = new Audio("PopUp/Sound/BGmusic.mp3");
 bgMusic.loop = true;
 bgMusic.volume = 0.1;
 
@@ -29,13 +28,13 @@ let battleScreen = "menu";
 let resultEndTime = 0;
 let resultDelay = 1000;
 
+
 function setup() {
   createCanvas(640, 360);
 }
 
 
 function draw() {
-
   // Draw current level background
   drawLevelBackground();
 
@@ -68,7 +67,7 @@ function draw() {
       if (bossHP <= 0) {
         battleScreen = "win";
       } else {
-        battleScreen = "dodge";
+        startDodge();
       }
     }
   }
@@ -76,11 +75,9 @@ function draw() {
   // Dodge phase
   else if (battleScreen === "dodge") {
     drawDodgeScreen();
-
-    // Press R to return to fight menu
-    if (keyIsDown(82)) {
-      battleScreen = "menu";
-    }
+     if (millis() >= dodgeEndTime){
+       endDodge()
+     }  
   }
 
   // Victory screen
@@ -98,8 +95,94 @@ function draw() {
   if (typeof drawPopupOverlay === "function") {
     drawPopupOverlay();
   }
-
 }
+
+
+// Click FIGHT to start attacking
+function mousePressed() {
+  startBackgroundMusic();
+
+  // Check if FIGHT button was clicked
+  if (
+    battleScreen === "menu" &&
+    mouseX >= 240 &&
+    mouseX <= 400 &&
+    mouseY >= 205 &&
+    mouseY <= 265
+  ) {
+    attackX = barX;
+    attackSpeed = abs(attackSpeed);
+
+    // Open fight screen
+    battleScreen = "fight";
+
+    console.log("FIGHT button clicked!");
+  }
+
+  // Enable popup sound without breaking the game
+  if (typeof enablePopupSound === "function") {
+    try {
+      enablePopupSound();
+    } catch (error) {
+      console.error("Popup sound error:", error);
+    }
+  }
+}
+
+
+// Keyboard controls
+function keyPressed() {
+  if (key === '1' ){
+    spearAttack()}
+
+  if (key === "g" || key === "G") {
+    showWasted();
+  }
+
+  // Press Space to attack
+  if (key === " " && battleScreen === "fight") {
+    let center = barX + barWidth / 2;
+
+    // Distance from middle
+    let distanceFromCenter = abs(attackX - center);
+
+    // Calculate damage
+    let damage = round(
+      map(
+        distanceFromCenter,
+        0,
+        barWidth / 2,
+        100,
+        0
+      )
+    );
+
+    damage = constrain(damage, 0, 100);
+
+    // Damage the boss
+    damageBoss(damage);
+
+    // Freeze the attack line
+    battleScreen = "result";
+
+    // Start 1-second delay
+    resultEndTime = millis() + resultDelay;
+  }
+
+  // Return from dodge phase
+  if (
+    (key === "r" || key === "R") &&
+    battleScreen === "dodge"
+  ) {
+    battleScreen = "menu";
+  }
+
+  // Prevent Space from scrolling page
+  if (key === " ") {
+    return false;
+  }
+}
+
 
 function startBackgroundMusic() {
   if (bgMusic.paused) {
@@ -110,10 +193,74 @@ function startBackgroundMusic() {
 }
 
 
+// Move the attack line back and forth
+function moveAttackLine() {
+  attackX += attackSpeed;
+
+  // Right wall
+  if (attackX >= barX + barWidth) {
+    attackX = barX + barWidth;
+    attackSpeed = -abs(attackSpeed);
+  }
+
+  // Left wall
+  if (attackX <= barX) {
+    attackX = barX;
+    attackSpeed = abs(attackSpeed);
+  }
+}
+
+
+function damageBoss(damage) {
+  let level2HP = Math.round(maxBossHP * 2 / 3);
+  let level3HP = Math.round(maxBossHP / 3);
+
+  if (bossLevel === 1) {
+    bossHP = max(level2HP, bossHP - damage);
+
+    if (bossHP <= level2HP) {
+      bossLevel = 2;
+    }
+  }
+
+  else if (bossLevel === 2) {
+    bossHP = max(level3HP, bossHP - damage);
+
+    if (bossHP <= level3HP) {
+      bossLevel = 3;
+    }
+  }
+
+  else if (bossLevel === 3) {
+    bossHP = max(0, bossHP - damage);
+  }
+}
+
+
+function drawLevelBackground() {
+  background(12);
+
+  let bg = null;
+
+  if (bossLevel === 2) {
+    bg = marioBG;
+  }
+
+  if (bossLevel === 3) {
+    bg = walmartBG;
+  }
+
+  // Draw the selected background
+  if (bg && bg.complete && bg.naturalWidth > 0) {
+    drawingContext.drawImage(
+      bg, 0, 0, width, height
+    );
+  }
+}
+
 
 // Draw only the boss HP bar
 function drawBossHP() {
-
   // Gray background
   fill(70);
   noStroke();
@@ -133,7 +280,6 @@ function drawBossHP() {
 
 // Draw FIGHT button
 function drawMenu() {
-
   let hover =
     mouseX >= 240 &&
     mouseX <= 400 &&
@@ -156,28 +302,8 @@ function drawMenu() {
 }
 
 
-// Move the attack line back and forth
-function moveAttackLine() {
-
-  attackX += attackSpeed;
-
-  // Right wall
-  if (attackX >= barX + barWidth) {
-    attackX = barX + barWidth;
-    attackSpeed = -abs(attackSpeed);
-  }
-
-  // Left wall
-  if (attackX <= barX) {
-    attackX = barX;
-    attackSpeed = abs(attackSpeed);
-  }
-}
-
-
 // Draw the attack bar
 function drawAttackBar() {
-
   let center = barX + barWidth / 2;
   let ctx = drawingContext;
 
@@ -257,10 +383,8 @@ function drawAttackBar() {
 
 
 // Dodge screen
-
-
 function drawDodgeScreen() {
-
+  let spearPhase = bossLevel >=2 
   // Draw the white dodge arena
   push();
   rectMode(CORNER);
@@ -270,11 +394,16 @@ function drawDodgeScreen() {
   rect(190, 190, 260, 95);
   pop();
 
-if (typeof drawHeart === "function") {
-  push();
-  drawHeart();
-  pop();
-}
+  if (!gameOver) {
+    moveRocks()
+  }
+  drawRocks()
+
+  if (typeof drawHeart === "function") {
+    push();
+    drawHeart();
+    pop();
+  }
 
   // Return instructions
   push();
@@ -286,137 +415,20 @@ if (typeof drawHeart === "function") {
   pop();
 }
 
-
-// Click FIGHT to start attacking
-
-function mousePressed() {
-
-  startBackgroundMusic();
-  // Check if FIGHT button was clicked
-  if (
-    battleScreen === "menu" &&
-    mouseX >= 240 &&
-    mouseX <= 400 &&
-    mouseY >= 205 &&
-    mouseY <= 265
-  ) {
-    attackX = barX;
-    attackSpeed = abs(attackSpeed);
-
-    // Open fight screen
-    battleScreen = "fight";
-
-    console.log("FIGHT button clicked!");
-  }
-
-  // Enable popup sound without breaking the game
-  if (typeof enablePopupSound === "function") {
-    try {
-      enablePopupSound();
-    } catch (error) {
-      console.error("Popup sound error:", error);
-    }
+//phase leveling
+function startDodge(){
+  battleScreen = 'dodge'
+  rocks = []
+  stopSpears()
+  dodgeEndTime = millis() +dodgeDuration
+  //phase 2
+  if (bossLevel >= 2){
+    spearAttack()
   }
 }
 
-
-
-// Keyboard controls
-function keyPressed() {
-
-  if (key === "g" || key === "G") {
-  showWasted();
-}
-
-  // Press Space to attack
-  if (key === " " && battleScreen === "fight") {
-
-    let center = barX + barWidth / 2;
-
-    // Distance from middle
-    let distanceFromCenter = abs(attackX - center);
-
-    // Calculate damage
-    let damage = round(
-      map(
-        distanceFromCenter,
-        0,
-        barWidth / 2,
-        100,
-        0
-      )
-    );
-
-    damage = constrain(damage, 0, 100);
-
-    // Damage the boss
-    damageBoss(damage);
-
-    // Freeze the attack line
-    battleScreen = "result";
-
-    // Start 1-second delay
-    resultEndTime = millis() + resultDelay;
-  }
-
-  // Return from dodge phase
-  if (
-    (key === "r" || key === "R") &&
-    battleScreen === "dodge"
-  ) {
-    battleScreen = "menu";
-  }
-
-  // Prevent Space from scrolling page
-  if (key === " ") {
-    return false;
-  }
-}
-
-function drawLevelBackground() {
-  background(12);
-
-  let bg = null;
-
-  if (bossLevel === 2) {
-    bg = marioBG;
-  }
-
-  if (bossLevel === 3) {
-    bg = walmartBG;
-  }
-
-  // Draw the selected background
-  if (bg && bg.complete && bg.naturalWidth > 0) {
-    drawingContext.drawImage(
-      bg, 0, 0, width, height
-    );
-  }
-}
-
-
-function damageBoss(damage) {
-
-  let level2HP = Math.round(maxBossHP * 2 / 3);
-  let level3HP = Math.round(maxBossHP / 3);
-
-  if (bossLevel === 1) {
-    bossHP = max(level2HP, bossHP - damage);
-
-    if (bossHP <= level2HP) {
-      bossLevel = 2;
-    }
-  }
-
-  else if (bossLevel === 2) {
-    bossHP = max(level3HP, bossHP - damage);
-
-    if (bossHP <= level3HP) {
-      bossLevel = 3;
-    }
-  }
-
-  else if (bossLevel === 3) {
-    bossHP = max(0, bossHP - damage);
-  }
+function endDodge(){
+  rocks = []
+  stopSpears()
+  battleScreen = 'menu'
 }

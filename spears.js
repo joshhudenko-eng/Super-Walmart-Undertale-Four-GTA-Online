@@ -6,10 +6,12 @@ const spearShaftH = 80
 const spearHeadW = 30
 const spearHeadH = 24
 const spearLength = spearShaftH + spearHeadH
+let spearTimers = []
 
 function spawnSpears(x){
   spears.push({x: x, y: -spearLength})
 }
+
 function moveSpears(){
   for(let i = spears.length -1; i>= 0; i--){
     spears[i].y += spearSpeed
@@ -23,17 +25,15 @@ function drawSpears(){
   push()
   rectMode(CORNER)
   noStroke()
+  fill("white")
   for (let s of spears){
-    fill("white")
     rect(s.x - spearShaftW/2, s.y, spearShaftW, spearShaftH)
     triangle(s.x - spearHeadW/2, s.y + spearShaftH, s.x + spearHeadW/2, s.y + spearShaftH, s.x, s.y + spearLength)
-      
-    }
-  pop()
   }
+  pop()
+}
 
 function spawnSpearRow(){
-  let spotW = width / spearSpots
   let gap = floor(random(spearSpots))
 
   for (let i = 0; i < spearSpots; i++){
@@ -48,9 +48,12 @@ function spearAttack(){
   // if you want to adjust how many phases its the second part
   for(let i = 0; i < 5; i++){
     //if you wanto to adjust time between spears its the last variable in milliseconds
-    setTimeout(spawnSpearRow, i * 1000)
+    spearTimers.push(setTimeout(spawnSpearRow, i * 1000))
   }
 }
-  function keyPressed(){
-    if (key === '1') spearAttack()
-  }
+
+function stopSpears(){
+  for (let t of spearTimers) clearTimeout(t)
+  spearTimers = []
+  spears = []
+}

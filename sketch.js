@@ -9,16 +9,6 @@ let rocks = []
 let gameOver = false
 let lasers = []
 let lives = 3
-function setup() {
-  createCanvas(windowWidth, windowHeight);
-}
 
-function draw() {
-  background("black");
-  if (!gameOver){
-  moveRocks()
-    }
-  drawRocks()
-
-  drawHeart()
-}
+let dodgeEndTime = 0
+let dodgeDuration = 5000
