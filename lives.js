@@ -1,7 +1,7 @@
 let lifeX = 0;
 let lifeY = 0;
 
-function drawSingleLife() {
+function drawFullLife() {
   rectMode(CENTER);
   fill("#ff1f1f");
   noStroke();
@@ -32,10 +32,10 @@ function drawSingleLife() {
 }
 
 function drawLives() {
-    for (let i = 0; i < playersLives; i++) {
+    for (let i = 0; i < playerHP; i++) {
         push();
         translate(20 + i * 20, 20);
-        drawSingleLife();
+        drawFullLife()
         pop();
-    }
+}
 }
