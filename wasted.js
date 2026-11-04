@@ -27,7 +27,15 @@ function showWasted() {
 
   // Create the WASTED video
   let video = document.createElement("video");
-  video.src = "Videos/wasted.mp4";
+  video.src = "Video/Wasted.mp4";
+
+  video.onerror = function () {
+  console.error("Video error code:", video.error && video.error.code, video.error && video.error.message);
+};
+video.onloadeddata = function () {
+  console.log("Video loaded OK");
+};
+
   video.style.width = "100%";
   video.style.height = "100%";
   video.style.objectFit = "cover";
