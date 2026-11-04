@@ -10,6 +10,10 @@ let bossHP = 500;
 let maxBossHP = 500;
 let bossLevel = 1;
 
+let playerHP = 3
+let playerDead = false
+
+
 let bgMusic = new Audio("PopUp/Sound/BGmusic.mp3");
 bgMusic.loop = true;
 bgMusic.volume = 0.1;
@@ -451,4 +455,43 @@ function endDodge(){
   stopSpears()
   stopSliders()
   battleScreen = 'menu'
+}
+
+// Test player damage with H
+window.addEventListener("keydown", function(event) {
+
+  if (
+    event.key.toLowerCase() === "h" &&
+    !event.repeat &&
+    battleScreen === "dodge"
+  ) {
+    console.log("H pressed!");
+
+    takePlayerDamage();
+
+    console.log("Player HP:", playerHP);
+  }
+
+});
+
+
+function takePlayerDamage() {
+
+  // Don't take damage after dying
+  if (playerDead) return;
+
+  // Lose 1 HP
+  playerHP -= 1;
+
+  console.log("Player HP:", playerHP);
+
+  // Check if player has died
+  if (playerHP <= 0) {
+
+    playerDead = true;
+    battleScreen = "gameover";
+
+    // Play GTA WASTED video
+    showWasted();
+  }
 }
