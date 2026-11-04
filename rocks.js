@@ -1,6 +1,6 @@
 function newRocks(){
   const x = width/2
-  const y = height/2
+  const y = 140
 
   const angle = atan2(heartY - y, heartX - x)
   //to change the speed of the projectiles change theese values

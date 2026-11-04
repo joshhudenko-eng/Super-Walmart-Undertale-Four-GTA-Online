@@ -33,8 +33,9 @@ let resultEndTime = 0;
 let resultDelay = 1000;
 
 
-function setup() {
+async function setup() {
   createCanvas(640, 360);
+  await loadStuff()
 }
 
 
@@ -99,6 +100,8 @@ function draw() {
   if (typeof drawPopupOverlay === "function") {
     drawPopupOverlay();
   }
+
+  drawLives()
 }
 
 
@@ -394,6 +397,10 @@ function drawDodgeScreen() {
   stroke(255);
   strokeWeight(3);
   rect(190, 190, 260, 95);
+  drawBoss()
+  if (bossLevel === 3) {
+    drawHat();
+  }
   pop();
 
 if (!gameOver) {

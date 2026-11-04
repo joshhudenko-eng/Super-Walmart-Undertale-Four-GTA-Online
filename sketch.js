@@ -12,3 +12,5 @@ let lives = 3
 
 let dodgeEndTime = 0
 let dodgeDuration = 5000
+
+let playersLives = 5;
