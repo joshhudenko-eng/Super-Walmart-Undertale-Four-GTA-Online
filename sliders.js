@@ -53,3 +53,13 @@ function stopSliders(){
     sliders = []
   }
 }
+
+function damageFromSliders(){
+  for (let i = sliders.length - 1; i >= 0; i--){
+    const d = dist(sliders[i].x, sliders[i].gapY, heartX, heartY)
+    if(d < sliderWidth/2 + 7 && !playerDead){
+      sliders.splice(i,1)
+      takePlayerDamage()
+    }
+  }
+}

@@ -408,9 +408,11 @@ if (!gameOver) {
   }
    if (bossLevel === 3){
      drawSliders()
+     damageFromSliders()
    }
     else if (bossLevel === 2){
        drawSpears()
+       damageFromSpears()
     }
     else{
       drawRocks()

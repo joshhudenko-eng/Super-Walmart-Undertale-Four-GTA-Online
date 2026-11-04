@@ -57,3 +57,14 @@ function stopSpears(){
   spearTimers = []
   spears = []
 }
+
+
+function damageFromSpears(){
+  for (let i = spears.length - 1; i >= 0; i--){
+    const d = dist(spears[i].x, spears[i].y, heartX, heartY)
+    if(d < spearShaftW/2 + 7 && !playerDead){
+      spears.splice(i,1)
+      takePlayerDamage()
+    }
+  }
+}
