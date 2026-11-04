@@ -9,10 +9,7 @@ function drawHeart() {
   rect(heartX, heartY + 2.9, 10, 3);
   rect(heartX, heartY + 5.9, 5, 3);
 
-  noFill(); //hitbox
-  strokeWeight(1);
-  stroke("#ffffff");
-  rect(heartX, heartY, 15, 15);
+ 
 
   if (keyIsDown("w")) heartY -= heartSpeed;
   if (keyIsDown("s")) heartY += heartSpeed;
