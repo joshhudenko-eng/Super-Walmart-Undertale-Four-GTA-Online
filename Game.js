@@ -4,7 +4,7 @@ let barWidth = 460;
 let barHeight = 72;
 
 let attackX = barX;
-let attackSpeed = 8;
+let attackSpeed = 15;
 
 let bossHP = 500;
 let maxBossHP = 500;
@@ -242,9 +242,7 @@ function drawLevelBackground() {
 
   let bg = null;
 
-  if (bossLevel === 2) {
-    bg = marioBG;
-  }
+  
 
   if (bossLevel === 3) {
     bg = walmartBG;
@@ -394,20 +392,26 @@ function drawDodgeScreen() {
   rect(190, 190, 260, 95);
   pop();
 
-  if (!gameOver) {
-    if (spearPhase){ 
+if (!gameOver) {
+    if (bossLevel === 3){
+      moveSliders()
+    }
+    else if (bossLevel === 2){
       moveSpears()
     }
-    else{
-  moveRocks()
+  else {
+    moveRocks()
+  }
+   if (bossLevel === 3){
+     drawSliders()
+   }
+    else if (bossLevel === 2){
+       drawSpears()
     }
-  }
-  if (spearPhase){
-    drawSpears()
-  }
-  else{
-  drawRocks()
-  }
+    else{
+      drawRocks()
+    }
+}
 
   if (typeof drawHeart === "function") {
     push();
@@ -430,9 +434,14 @@ function startDodge(){
   battleScreen = 'dodge'
   rocks = []
   stopSpears()
-  dodgeEndTime = millis() +dodgeDuration
-  //phase 2
-  if (bossLevel >= 2){
+  stopSliders()
+  dodgeEndTime = millis() + dodgeDuration
+
+  //phase 3!!!!!
+  if (bossLevel === 3){
+    sliderAttack()
+  }
+  else if (bossLevel >= 2){
     spearAttack()
   }
 }
@@ -440,5 +449,6 @@ function startDodge(){
 function endDodge(){
   rocks = []
   stopSpears()
+  stopSliders()
   battleScreen = 'menu'
 }

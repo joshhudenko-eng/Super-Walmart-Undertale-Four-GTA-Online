@@ -1,6 +1,6 @@
 let spears = []
 const spearSpots = 8
-const spearSpeed = 10
+const spearSpeed = 8
 const spearShaftW = 8
 const spearShaftH = 80
 const spearHeadW = 30
