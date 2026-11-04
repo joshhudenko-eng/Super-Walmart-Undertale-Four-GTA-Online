@@ -414,6 +414,7 @@ if (!gameOver) {
     }
     else{
       drawRocks()
+      damageFromRocks()
     }
 }
 

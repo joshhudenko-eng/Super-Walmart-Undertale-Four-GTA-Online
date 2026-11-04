@@ -38,3 +38,13 @@ function drawRocks(){
     newRocks()
   }
 }
+
+function damageFromRocks(){
+for (let i = rocks.length -1; i>=0; i--){
+  const d = dist(rocks[i].x, rocks[i].y, heartX, heartY)
+  if(d < rocks[i].diameter/2 + 7 && !playerDead){
+    rocks.splice(i,1)
+takePlayerDamage()
+}
+}
+}
