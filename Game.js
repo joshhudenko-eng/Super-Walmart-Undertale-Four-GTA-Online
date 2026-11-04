@@ -425,15 +425,6 @@ if (!gameOver) {
     drawHeart();
     pop();
   }
-
-  // Return instructions
-  push();
-  fill(255);
-  noStroke();
-  textAlign(CENTER, CENTER);
-  textSize(15);
-  text("Press R to return to menu", width / 2, 315);
-  pop();
 }
 
 //phase leveling
