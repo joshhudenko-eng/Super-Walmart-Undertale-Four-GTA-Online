@@ -99,6 +99,8 @@ function draw() {
   if (typeof drawPopupOverlay === "function") {
     drawPopupOverlay();
   }
+
+  drawLives()
 }
 
 

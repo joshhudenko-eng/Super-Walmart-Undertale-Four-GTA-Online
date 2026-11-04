@@ -34,7 +34,7 @@ function drawSingleLife() {
 function drawLives() {
     for (let i = 0; i < playersLives; i++) {
         push();
-        translate(30 + i * 35, 30);
+        translate(20 + i * 20, 20);
         drawSingleLife();
         pop();
     }
