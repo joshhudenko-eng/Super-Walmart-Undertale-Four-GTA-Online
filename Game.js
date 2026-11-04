@@ -262,14 +262,14 @@ function drawBossHP() {
   // Gray background
   fill(70);
   noStroke();
-  rect(180, 115, 280, 12);
+  rect(180, 15, 280, 12);
 
   // Red health bar
   fill(230, 65, 65);
 
   rect(
     180,
-    115,
+    15,
     280 * (bossHP / maxBossHP),
     12
   );
