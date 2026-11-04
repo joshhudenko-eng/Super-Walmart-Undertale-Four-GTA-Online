@@ -10,7 +10,7 @@ let bossHP = 500;
 let maxBossHP = 500;
 let bossLevel = 1;
 
-let playerHP = 3
+let playerHP = 5
 let playerDead = false
 
 
