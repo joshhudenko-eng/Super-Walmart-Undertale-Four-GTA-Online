@@ -1,6 +1,6 @@
 let spears = []
 const spearSpots = 8
-const spearSpeed = 8
+const spearSpeed = 6.5
 const spearShaftW = 8
 const spearShaftH = 80
 const spearHeadW = 30
@@ -34,7 +34,7 @@ function drawSpears(){
 }
 
 function spawnSpearRow(){
-  let gap = floor(random(spearSpots))
+  let gap = floor(random(1, spearSpots - 1))
 
   for (let i = 0; i < spearSpots; i++){
     if (i !== gap){
