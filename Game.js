@@ -395,9 +395,19 @@ function drawDodgeScreen() {
   pop();
 
   if (!gameOver) {
-    moveRocks()
+    if (spearPhase){ 
+      moveSpears()
+    }
+    else{
+  moveRocks()
+    }
   }
+  if (spearPhase){
+    drawSpears()
+  }
+  else{
   drawRocks()
+  }
 
   if (typeof drawHeart === "function") {
     push();
